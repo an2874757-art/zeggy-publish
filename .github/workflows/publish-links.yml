@@ -1,0 +1,22 @@
+name: نشر روابط ZEEGY BOX
+
+# يعمل من خوادم GitHub كل ٣٠ دقيقة — بلا بطاقة وبلا تشغيل جهازك ✓
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch: # تشغيل يدوي
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: نشر روابط التحميل
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python deploy/cron_publish.py

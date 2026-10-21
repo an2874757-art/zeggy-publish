@@ -1,0 +1,6 @@
+deploy/hf-token.txt
+deploy/github-pat.txt
+deploy/github-token.txt
+deploy/github-token-new.txt
+__pycache__/
+*.pyc
