@@ -1,17 +1,17 @@
-"""
-نشر روابط التحميل — نسخة مستقلة تُشغَّل من أي خدمة cron (سحابية).
+﻿"""
+ظ†ط´ط± ط±ظˆط§ط¨ط· ط§ظ„طھط­ظ…ظٹظ„ â€” ظ†ط³ط®ط© ظ…ط³طھظ‚ظ„ط© طھظڈط´ط؛ظژظ‘ظ„ ظ…ظ† ط£ظٹ ط®ط¯ظ…ط© cron (ط³ط­ط§ط¨ظٹط©).
 
     python deploy/cron_publish.py
 
-تستخدم:
-    • مهمة مجدولة على ويندوز/لينكس (cron)
-    • GitHub Actions
-    • Cloudflare Workers (Cron Trigger)
-    • cron-job.org أو أي خدمة cron مجانية (بتطلب رابط واحد)
+طھط³طھط®ط¯ظ…:
+    â€¢ ظ…ظ‡ظ…ط© ظ…ط¬ط¯ظˆظ„ط© ط¹ظ„ظ‰ ظˆظٹظ†ط¯ظˆط²/ظ„ظٹظ†ظƒط³ (cron)
+    â€¢ GitHub Actions
+    â€¢ Cloudflare Workers (Cron Trigger)
+    â€¢ cron-job.org ط£ظˆ ط£ظٹ ط®ط¯ظ…ط© cron ظ…ط¬ط§ظ†ظٹط© (ط¨طھط·ظ„ط¨ ط±ط§ط¨ط· ظˆط§ط­ط¯)
 
-المتغيّرات:
-    HF_TOKEN  — توكن Hugging Face (write)
-    (أو ضعه في ملف deploy/hf-token.txt بجانب السكربت ✓)
+ط§ظ„ظ…طھط؛ظٹظ‘ط±ط§طھ:
+    HF_TOKEN  â€” طھظˆظƒظ† Hugging Face (write)
+    (ط£ظˆ ط¶ط¹ظ‡ ظپظٹ ظ…ظ„ظپ deploy/hf-token.txt ط¨ط¬ط§ظ†ط¨ ط§ظ„ط³ظƒط±ط¨طھ âœ“)
 """
 import base64
 import json
@@ -26,24 +26,24 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HF_REPO = "hkarrar227/zeggy-data"
 HF_API = "https://huggingface.co/api/datasets"
 
-# الملفات على MediaFire (المجلد المشترك) — بدّلها لو غيّرت الملفات
+# ط§ظ„ظ…ظ„ظپط§طھ ط¹ظ„ظ‰ MediaFire (ط§ظ„ظ…ط¬ظ„ط¯ ط§ظ„ظ…ط´طھط±ظƒ) â€” ط¨ط¯ظ‘ظ„ظ‡ط§ ظ„ظˆ ط؛ظٹظ‘ط±طھ ط§ظ„ظ…ظ„ظپط§طھ
 FILES = [
-    ("bycusznj016983x", "أندرويد + تلفاز (APK)"),
-    ("pzhsd7zuduadeal", "ويندوز — مثبّت"),
-    ("anxl7qi0vxcoiv4", "ويندوز — محمول (بدون تثبيت)"),
-    ("c4u8cm76ezotbzj", "آيفون/آيباد (مشروع Xcode)"),
+    ("bycusznj016983x", "ط£ظ†ط¯ط±ظˆظٹط¯ + طھظ„ظپط§ط² (APK)"),
+    ("pzhsd7zuduadeal", "ظˆظٹظ†ط¯ظˆط² â€” ظ…ط«ط¨ظ‘طھ"),
+    ("anxl7qi0vxcoiv4", "ظˆظٹظ†ط¯ظˆط² â€” ظ…ط­ظ…ظˆظ„ (ط¨ط¯ظˆظ† طھط«ط¨ظٹطھ)"),
+    ("c4u8cm76ezotbzj", "ط¢ظٹظپظˆظ†/ط¢ظٹط¨ط§ط¯ (ظ…ط´ط±ظˆط¹ Xcode)"),
 ]
 
-# نسخة الأندرويد الدائمة على Hugging Face — used for in-app update ✓
-# (رابط مباشر يُنزَّل داخل التطبيق — MediaFire صفحة ويب لا ملفاً)
+# ظ†ط³ط®ط© ط§ظ„ط£ظ†ط¯ط±ظˆظٹط¯ ط§ظ„ط¯ط§ط¦ظ…ط© ط¹ظ„ظ‰ Hugging Face â€” used for in-app update âœ“
+# (ط±ط§ط¨ط· ظ…ط¨ط§ط´ط± ظٹظڈظ†ط²ظژظ‘ظ„ ط¯ط§ط®ظ„ ط§ظ„طھط·ط¨ظٹظ‚ â€” MediaFire طµظپط­ط© ظˆظٹط¨ ظ„ط§ ظ…ظ„ظپط§ظ‹)
 APK_HF_URL = (
     "https://huggingface.co/datasets/hkarrar227/zeggy-data/resolve/main/"
     "apk/ZEEGY-BOX-Android.apk"
 )
 
-# إصدار التطبيق الحالي (versionCode) — يُرفع مع كل بناء جديد
-APP_VERSION = "1.1"
-APP_VERSION_CODE = 11
+# ط¥طµط¯ط§ط± ط§ظ„طھط·ط¨ظٹظ‚ ط§ظ„ط­ط§ظ„ظٹ (versionCode) â€” ظٹظڈط±ظپط¹ ظ…ط¹ ظƒظ„ ط¨ظ†ط§ط، ط¬ط¯ظٹط¯
+APP_VERSION = "2.2"
+APP_VERSION_CODE = 22
 
 UA = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/122 Safari/537.36",
@@ -106,14 +106,27 @@ def commit(token: str, path: str, payload: dict, summary: str) -> bool:
         with urllib.request.urlopen(req, timeout=180) as r:
             return r.status in (200, 201)
     except Exception as e:
-        print("  ⚠", path, type(e).__name__, str(e)[:80])
+        print("  âڑ ", path, type(e).__name__, str(e)[:80])
         return False
+
+
+def current_remote_manifest() -> dict:
+    """بيان التحديث الموجود سحابياً (لحماية الحاوية من التراجع) ✓"""
+    try:
+        req = urllib.request.Request(
+            "https://huggingface.co/datasets/hkarrar227/zeggy-data/resolve/main/app-update.json",
+            headers=UA,
+        )
+        with urllib.request.urlopen(req, timeout=90) as r:
+            return json.loads(r.read().decode("utf-8", "replace"))
+    except Exception:
+        return {}
 
 
 def main() -> int:
     token = get_token()
     if not token:
-        print("⚠ لا يوجد HF_TOKEN — تخطّي")
+        print("âڑ  ظ„ط§ ظٹظˆط¬ط¯ HF_TOKEN â€” طھط®ط·ظ‘ظٹ")
         return 1
 
     links = []
@@ -123,7 +136,7 @@ def main() -> int:
         name = size = ""
         if status == 200:
             t = re.search(r"<title>([^<]{2,140}?)</title>", html)
-            name = t.group(1).split("|")[0].split("—")[0].strip() if t else ""
+            name = t.group(1).split("|")[0].split("â€”")[0].strip() if t else ""
             s = re.search(r"([\d.]+\s*(?:MB|KB|GB))", html)
             size = s.group(1) if s else ""
         links.append(
@@ -135,11 +148,11 @@ def main() -> int:
                 "available": status == 200,
             }
         )
-        print(f"  {'✔' if status == 200 else '✘'} {label:26} {name} ({size})")
+        print(f"  {'âœ”' if status == 200 else 'âœک'} {label:26} {name} ({size})")
 
     alive = [l for l in links if l["available"]]
 
-    # رابط تحميل مباشر للأندرويد (نسخة HF الدائمة) — يُفتح في المتصفح ✓
+    # ط±ط§ط¨ط· طھط­ظ…ظٹظ„ ظ…ط¨ط§ط´ط± ظ„ظ„ط£ظ†ط¯ط±ظˆظٹط¯ (ظ†ط³ط®ط© HF ط§ظ„ط¯ط§ط¦ظ…ط©) â€” ظٹظڈظپطھط­ ظپظٹ ط§ظ„ظ…طھطµظپط­ âœ“
     try:
         req = urllib.request.Request(
             APK_HF_URL, headers={"User-Agent": UA["User-Agent"]}, method="GET"
@@ -149,19 +162,19 @@ def main() -> int:
         alive.insert(
             1,
             {
-                "label": "أندرويد — تحميل مباشر (الأحدث)",
+                "label": "ط£ظ†ط¯ط±ظˆظٹط¯ â€” طھط­ظ…ظٹظ„ ظ…ط¨ط§ط´ط± (ط§ظ„ط£ط­ط¯ط«)",
                 "url": APK_HF_URL,
                 "name": "ZEEGY-BOX-Android.apk",
                 "size": f"{apk_size / 1048576:.2f}MB",
                 "available": True,
             },
         )
-        print(f"  ✔ {'أندرويد — تحميل مباشر':26} ZEEGY-BOX-Android.apk")
+        print(f"  âœ” {'ط£ظ†ط¯ط±ظˆظٹط¯ â€” طھط­ظ…ظٹظ„ ظ…ط¨ط§ط´ط±':26} ZEEGY-BOX-Android.apk")
     except Exception as e:
-        print(f"  ⚠ رابط APK المباشر: {type(e).__name__}")
+        print(f"  âڑ  ط±ط§ط¨ط· APK ط§ظ„ظ…ط¨ط§ط´ط±: {type(e).__name__}")
 
     if not alive:
-        print("⚠ لا يوجد ملف متاح")
+        print("âڑ  ظ„ط§ ظٹظˆط¬ط¯ ظ…ظ„ظپ ظ…طھط§ط­")
         return 1
 
     ok1 = commit(
@@ -173,12 +186,12 @@ def main() -> int:
         },
         "download links (cron)",
     )
-    print(f"  {'✔' if ok1 else '⚠'} روابط التحميل")
+    print(f"  {'âœ”' if ok1 else 'âڑ '} ط±ظˆط§ط¨ط· ط§ظ„طھط­ظ…ظٹظ„")
 
     apk = next((l for l in alive if "APK" in l["label"]), None)
     if apk:
-        # رابط التحديث: نسخة HF الدائمة (ملف مباشر) ✦
-        # MediaFire رابط صفحة — لا يصلح للتنزيل الآلي داخل التطبيق ✗
+        # ط±ط§ط¨ط· ط§ظ„طھط­ط¯ظٹط«: ظ†ط³ط®ط© HF ط§ظ„ط¯ط§ط¦ظ…ط© (ظ…ظ„ظپ ظ…ط¨ط§ط´ط±) âœ¦
+        # MediaFire ط±ط§ط¨ط· طµظپط­ط© â€” ظ„ط§ ظٹطµظ„ط­ ظ„ظ„طھظ†ط²ظٹظ„ ط§ظ„ط¢ظ„ظٹ ط¯ط§ط®ظ„ ط§ظ„طھط·ط¨ظٹظ‚ âœ—
         update_url = APK_HF_URL
         size = 0
         try:
@@ -190,24 +203,49 @@ def main() -> int:
         except Exception:
             pass
 
+        # حماية جذرية من التراجع: قد يُشغَّل السكربت من مصادر قديمة
+        # (مستودع سحابي لم يُحدَّث بعد، أو نسخة محلية قديمة) ⇒ إن كان
+        # الإصدار المنشور سحابياً أحدث من نسخة السكربت، نحافظ على بياناته
+        # ولا نُرجِع بيان التحديث للوراء ✓
+        cur = current_remote_manifest()
+        try:
+            remote_code = int(cur.get("versionCode") or 0)
+        except (TypeError, ValueError):
+            remote_code = 0
+        if remote_code > APP_VERSION_CODE:
+            version = str(cur.get("version") or APP_VERSION)
+            notes = str(cur.get("notes") or "")
+            published_at = str(cur.get("publishedAt") or time.strftime("%Y-%m-%d %H:%M"))
+            print(f"  ⚠ الإصدار السحابي ({remote_code}) أحدث — حفظ بيان التحديث ✓")
+        else:
+            version = APP_VERSION
+            notes = "تحديث 2.2 — إصلاح صفحات المجموعات ونجوم الشهر (كانت لا تفتح) + زر الرجوع في مكانه الصحيح تحت الهيدر + فتح الأعمال أسرع (تحميل مسبق عند اللمس) + أسماء النجوم تظهر في الرئيسية."
+            published_at = time.strftime("%Y-%m-%d %H:%M")
+
         ok2 = commit(
             token,
             "app-update.json",
             {
-                "version": APP_VERSION,
-                "versionCode": APP_VERSION_CODE,
+                "version": version,
+                "versionCode": max(APP_VERSION_CODE, remote_code),
                 "url": update_url,
-                "notes": "الإصدار الرسمي — روابط دائمة ✦ أندرويد + تلفاز + ويندوز + ماك",
-                "publishedAt": time.strftime("%Y-%m-%d %H:%M"),
+                "notes": notes,
+                "publishedAt": published_at,
                 "size": size,
             },
             "app update manifest (cron)",
         )
-        print(f"  {'✔' if ok2 else '⚠'} بيان التحديث")
+        print(f"  {'âœ”' if ok2 else 'âڑ '} ط¨ظٹط§ظ† ط§ظ„طھط­ط¯ظٹط«")
 
-    print(f"✔ تم — {len(alive)}/{len(FILES)} ملف")
+    print(f"âœ” طھظ… â€” {len(alive)}/{len(FILES)} ظ…ظ„ظپ")
     return 0 if ok1 else 1
 
 
 if __name__ == "__main__":
     sys.exit(main())
+
+
+
+
+
+
