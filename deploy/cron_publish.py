@@ -28,11 +28,14 @@ HF_API = "https://huggingface.co/api/datasets"
 
 # ط§ظ„ظ…ظ„ظپط§طھ ط¹ظ„ظ‰ MediaFire (ط§ظ„ظ…ط¬ظ„ط¯ ط§ظ„ظ…ط´طھط±ظƒ) â€” ط¨ط¯ظ‘ظ„ظ‡ط§ ظ„ظˆ ط؛ظٹظ‘ط±طھ ط§ظ„ظ…ظ„ظپط§طھ
 FILES = [
-    ("4rmhxdlqgiogltj", "ط£ظ†ط¯ط±ظˆظٹط¯ + طھظ„ظپط§ط² (APK)"),
-    ("pzhsd7zuduadeal", "ظˆظٹظ†ط¯ظˆط² â€” ظ…ط«ط¨ظ‘طھ"),
-    ("anxl7qi0vxcoiv4", "ظˆظٹظ†ط¯ظˆط² â€” ظ…ط­ظ…ظˆظ„ (ط¨ط¯ظˆظ† طھط«ط¨ظٹطھ)"),
-    ("c4u8cm76ezotbzj", "ط¢ظٹظپظˆظ†/ط¢ظٹط¨ط§ط¯ (ظ…ط´ط±ظˆط¹ Xcode)"),
+    ("4rmhxdlqgiogltj", "أندرويد + تلفاز (APK)"),
+    ("pzhsd7zuduadeal", "ويندوز — مثبّت"),
+    ("anxl7qi0vxcoiv4", "ويندوز — محمول (بدون تثبيت)"),
+    ("c4u8cm76ezotbzj", "آيفون/آيباد (مشروع Xcode)"),
 ]
+
+# رابط تطبيق الويب الفوري — يفتح من أي متصفح بلا تثبيت (نسخة الكتالوج الثابت)
+WEB_APP_URL = "https://an2874757-art.github.io/zeggy-web/"
 
 # ظ†ط³ط®ط© ط§ظ„ط£ظ†ط¯ط±ظˆظٹط¯ ط§ظ„ط¯ط§ط¦ظ…ط© ط¹ظ„ظ‰ Hugging Face â€” used for in-app update âœ“
 # (ط±ط§ط¨ط· ظ…ط¨ط§ط´ط± ظٹظڈظ†ط²ظژظ‘ظ„ ط¯ط§ط®ظ„ ط§ظ„طھط·ط¨ظٹظ‚ â€” MediaFire طµظپط­ط© ظˆظٹط¨ ظ„ط§ ظ…ظ„ظپط§ظ‹)
@@ -162,16 +165,28 @@ def main() -> int:
         alive.insert(
             1,
             {
-                "label": "ط£ظ†ط¯ط±ظˆظٹط¯ â€” طھط­ظ…ظٹظ„ ظ…ط¨ط§ط´ط± (ط§ظ„ط£ط­ط¯ط«)",
+                "label": "أندرويد — تحميل مباشر (الأحدث)",
                 "url": APK_HF_URL,
                 "name": "ZEEGY-BOX-Android.apk",
                 "size": f"{apk_size / 1048576:.2f}MB",
                 "available": True,
             },
         )
-        print(f"  âœ” {'ط£ظ†ط¯ط±ظˆظٹط¯ â€” طھط­ظ…ظٹظ„ ظ…ط¨ط§ط´ط±':26} ZEEGY-BOX-Android.apk")
+        print(f"  ✓ أندرويد — تحميل مباشر          ZEEGY-BOX-Android.apk")
     except Exception as e:
         print(f"  âڑ  ط±ط§ط¨ط· APK ط§ظ„ظ…ط¨ط§ط´ط±: {type(e).__name__}")
+
+    # تطبيق الويب لآيفون/آيباد/أي متصفح — فوري بلا تثبيت (نسخة الكتالوج الثابت) ✓
+    alive.append(
+        {
+            "label": "آيفون / آيباد / أي متصفح — تطبيق ويب فوري (بدون تثبيت)",
+            "url": WEB_APP_URL,
+            "name": "web.zeggy",
+            "size": "0MB (يفتح مباشرة)",
+            "available": True,
+        }
+    )
+    print("  ✓ تطبيق الويب (آيفون/أي متصفح)  web.zeggy")
 
     if not alive:
         print("âڑ  ظ„ط§ ظٹظˆط¬ط¯ ظ…ظ„ظپ ظ…طھط§ط­")
